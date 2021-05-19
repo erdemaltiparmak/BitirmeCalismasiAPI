@@ -22,15 +22,6 @@ namespace BitirmeCalismasiAPI.Models
             modelBuilder.Entity<Bileklik>().HasKey(x => x.BileklikID);
             modelBuilder.Entity<Hasta>().HasKey(x => x.HastaID);
             modelBuilder.Entity<Personel>().HasKey(x => x.PersonelID);
-
-            modelBuilder.Entity<Hasta>()
-                        .HasOne<Personel>(x=> x.HastaPersonel)
-                        .WithMany(p => p.PersonelHastalar)
-                        .HasForeignKey(s => s.PersonelID);
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
         }
 
 

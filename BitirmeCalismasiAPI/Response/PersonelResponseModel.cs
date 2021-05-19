@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BitirmeCalismasiAPI.Models
+namespace BitirmeCalismasiAPI.Response
 {
-    public class Personel
+    public class PersonelResponseModel
     {
         public int PersonelID { get; set; }
         public string PersonelAd { get; set; }
         public string PersonelSoyad { get; set; }
         public string PersonelMail { get; set; }
-        public string PersonelSifre { get; set; }
+        public List<HastaResponseModel> Hastas { get; set; }
     }
-
-
 }

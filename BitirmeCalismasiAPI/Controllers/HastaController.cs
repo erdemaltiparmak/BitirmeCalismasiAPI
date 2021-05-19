@@ -1,12 +1,14 @@
-﻿using BitirmeCalismasiAPI.Models;
+﻿using AutoMapper;
+using BitirmeCalismasiAPI.Models;
+using BitirmeCalismasiAPI.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
-
 namespace BitirmeCalismasiAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -14,33 +16,26 @@ namespace BitirmeCalismasiAPI.Controllers
     public class HastaController : ControllerBase
     {
         private readonly BitirmeContext _context;
-        public HastaController(BitirmeContext context)
+        private readonly IMapper _mapper;
+        public HastaController(BitirmeContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         
+        [Route("{hastaID}")]
         [HttpGet]
-        public List<Hasta> Hastalar()
+        public IActionResult GetHastaById(int hastaID)
         {
-            var hastas =  _context.Hastas.ToList();
-            hastas.ForEach(x =>
-            {
-                x.HastaPersonel = _context.Personels.FirstOrDefault(y => y.PersonelID == x.PersonelID);
-                x.HastaBileklik = _context.Bilekliks.FirstOrDefault(z => z.BileklikID == x.BileklikID);
+            var hasta = _context.Hastas.SingleOrDefault(x => x.HastaID == hastaID);
+            if (hasta == null) return NotFound("id is wrong");
 
-            });
-            //var innerJoin = from h in hastas
-            //                join p in await _context.Personels.ToListAsync()
-            //                on h.PersonelID equals p.PersonelID
-            //                select (h,p);
+            var returnValue = _mapper.Map<FullFieldsHastaResponseModel>(hasta);
+            returnValue.Bileklik = _mapper.Map<BileklikResponseModel>(_context.Bilekliks
+                .SingleOrDefault(x => x.BileklikID == hasta.BileklikID));
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(returnValue);
+            return  Ok(jsonString);
 
-
-
-            if (hastas.Count !=0)
-                return hastas;
-
-
-            return null;
         }
     }
 }

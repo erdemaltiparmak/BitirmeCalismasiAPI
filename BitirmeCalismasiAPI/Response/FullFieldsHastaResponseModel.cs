@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BitirmeCalismasiAPI.Models
+namespace BitirmeCalismasiAPI.Response
 {
-    public class Hasta
+    public class FullFieldsHastaResponseModel
     {
         public int HastaID { get; set; }
-        public int BileklikID { get; set; }
-        public int PersonelID { get; set; }
         public string HastaAd { get; set; }
         public string HastaSoyad { get; set; }
         public int HastaYas { get; set; }
@@ -18,5 +16,6 @@ namespace BitirmeCalismasiAPI.Models
         public string HastaAcikAdres { get; set; }
         public double HastaKonumX { get; set; }
         public double HastaKonumY { get; set; }
+        public BileklikResponseModel Bileklik { get; set; }
     }
 }
