@@ -75,5 +75,22 @@ namespace BitirmeCalismasiAPI.Controllers
             
         }
 
+        [Route("sorgula")]
+        [HttpGet]
+        public IActionResult IsDoctor(string eMail)
+        {
+            var personel = _context.Personels.FirstOrDefault(x => x.PersonelMail == eMail );
+
+            var returnValue = _mapper.Map<PersonelResponseModel>(personel);
+
+            if (personel== null)
+                return BadRequest();
+            else
+                return new JsonResult(returnValue);
+
+            
+        }
     }
+
+    
 }
